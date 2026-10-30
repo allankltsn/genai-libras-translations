@@ -1,0 +1,16 @@
+# Nunca entram no contexto/imagem: segredos, venv, testes, caches.
+.venv
+.env
+.env.*
+**/.env
+**/.env.*
+tests
+scripts
+**/__pycache__
+**/*.pyc
+.pytest_cache
+README.md
+pyproject.toml
+requirements.in
+Dockerfile
+.dockerignore

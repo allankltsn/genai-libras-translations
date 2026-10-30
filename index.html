@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="__CSP__" />
+    <meta name="referrer" content="no-referrer" />
+    <link rel="icon" href="data:," />
+    <title>Avatar Libras (protótipo)</title>
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <a id="skip" class="skip" href="#text-input">Ir para o campo de texto</a>
+
+    <div id="banner" role="note">
+      <strong>Protótipo:</strong> sinais aproximados, não validados por intérprete de Libras. Expressão facial,
+      emoção, sobrancelhas e movimento da boca também são aproximações não validadas; a boca não é sincronia labial
+      real. No modo IA, sinais gerados por IA são aproximações, NÃO são Libras validada. Não use para comunicação
+      importante, médica, jurídica ou de emergência.
+    </div>
+
+    <div id="layout">
+      <button id="sidebar-toggle" type="button" aria-controls="sidebar" aria-expanded="true">Ocultar painel</button>
+
+      <aside id="sidebar" aria-label="Painel de controle">
+        <h1>Avatar Libras <span class="badge">protótipo</span></h1>
+
+        <section aria-labelledby="h-input">
+          <h2 id="h-input">1. Fale ou digite</h2>
+          <fieldset id="ai-options">
+            <legend>Modo de tradução</legend>
+            <label class="check"><input type="checkbox" id="use-ai" autocomplete="off" /> Usar IA (envia o texto à API local e ao provedor do modelo)</label>
+            <p class="notice small">Com a IA ligada, o texto sai do navegador para a API local e dela para um provedor externo. Use só frases de teste.</p>
+            <label class="check"><input type="checkbox" id="allow-gen" autocomplete="off" disabled /> Permitir sinais gerados por IA (aproximação, NÃO é Libras validada)</label>
+          </fieldset>
+          <p id="privacy" class="notice"></p>
+          <button id="mic" type="button" aria-pressed="false" aria-describedby="privacy" disabled>
+            <span id="mic-label">Usar microfone</span> <span id="mic-state" aria-hidden="true"></span>
+          </button>
+
+          <form id="text-form" autocomplete="off">
+            <label for="text-input">Ou digite o texto em português</label>
+            <textarea id="text-input" rows="3" maxlength="500" spellcheck="false"></textarea>
+            <button id="text-submit" type="submit" disabled>Mostrar em sinais (protótipo)</button>
+          </form>
+          <button id="stop" type="button" disabled>Parar e voltar à posição neutra</button>
+          <button id="undo-draft" type="button" hidden>Restaurar o texto digitado antes</button>
+          <details class="panel">
+            <summary>Detalhes de privacidade</summary>
+            <p class="notice small" id="privacy-details"></p>
+          </details>
+        </section>
+
+        <section aria-labelledby="h-out">
+          <h2 id="h-out">2. Resultado</h2>
+          <p class="label">Texto reconhecido ou digitado (a tradução começa sozinha; se a fala foi reconhecida errado, corrija no campo de texto e clique em Mostrar em sinais, ou use Parar)</p>
+          <p id="transcript" class="box">—</p>
+          <p class="label">Glosas (aproximação do português, não é tradução validada)</p>
+          <p id="glosses" class="box">—</p>
+          <p id="mode-state" class="label"><strong>Modo: local</strong></p>
+          <p id="status" class="status" role="status" aria-live="polite"></p>
+        </section>
+
+        <details class="panel" id="test-panel">
+          <summary>Sinais de demonstração (teste)</summary>
+          <div id="test-buttons"></div>
+        </details>
+
+        <p class="notice small">
+          Os sinais são aproximações em fase de protótipo e ainda precisam de validação por intérprete de Libras ou
+          pessoa surda. A conversão do português para glosas é simplificada e pode omitir palavras.
+        </p>
+      </aside>
+
+      <main id="viewport" tabindex="-1">
+        <p id="generated-label" role="note" hidden></p>
+        <button id="stop-float" type="button" disabled>Parar</button>
+        <div id="canvas-container" aria-label="Avatar 3D que mostra os sinais" role="img"></div>
+        <div id="loading-overlay">
+          <div class="spinner" aria-hidden="true"></div>
+          <p id="loading-text" role="status">Carregando modelo 3D…</p>
+          <button id="retry" type="button" hidden>Tentar novamente</button>
+        </div>
+      </main>
+    </div>
+
+    <footer id="credits">
+      <strong>Crédito do modelo 3D:</strong> Seed-san, por VirtualCast, Inc. (© VirtualCast, Inc.), licença
+      <a href="https://vrm.dev/licenses/1.0/" target="_blank" rel="noopener noreferrer">VRM Public License 1.0</a>.
+      Arquivo do modelo usado sem modificação; as poses são feitas em código. Nenhum endosso da VirtualCast.
+      Sem garantias, conforme a isenção de garantia da Seção 4 da licença. <a href="https://github.com/vrm-c/vrm-specification/tree/master/samples/Seed-san" target="_blank" rel="noopener noreferrer">Origem do modelo</a>.
+    </footer>
+
+    <dialog id="mic-consent" aria-labelledby="mc-title" aria-describedby="mc-text">
+      <h2 id="mc-title">Antes de usar o microfone</h2>
+      <p id="mc-text"></p>
+      <div class="dialog-actions">
+        <button id="mc-text-only" type="button" autofocus>Usar texto</button>
+        <button id="mc-accept" type="button">Entendi, usar microfone</button>
+      </div>
+    </dialog>
+  </body>
+</html>

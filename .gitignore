@@ -1,0 +1,28 @@
+node_modules
+dist
+*.log
+# O modelo VRM (Seed-san) NAO e redistribuido pelo repositorio publico ate decisao do usuario; ver README.md
+public/models/*.vrm
+
+# API Python (api/)
+api/.venv/
+api/.env
+__pycache__/
+.pytest_cache/
+
+# Docker Compose (raiz): aponta para o arquivo de segredos do 9router
+.env
+
+# Nao publicar: segredos, modelos sem licenca de redistribuicao, config local do assistente
+.env
+.env.*
+!.env.example
+api/.env
+api/.env.*
+!api/.env.example
+modelo/
+legacy/*.fbx
+*.fbx
+*.vrm
+.claude/
+.venv/

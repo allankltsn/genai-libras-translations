@@ -1,0 +1,26 @@
+# Front web: build com pnpm e serve estatico com nginx sem root. Bases fixadas por tag E digest.
+
+# --- build ---
+FROM node:24-alpine@sha256:8a32c8cf649a49915a66e81e7a609223c708d0adabf288ee3f4077d765542f85 AS build
+ENV CI=true
+# pnpm 12.11.2 (decisao do projeto; sem campo packageManager no package.json). Sem scripts de instalacao.
+RUN npm install --global --ignore-scripts pnpm@12.11.2
+WORKDIR /src
+# Dependencias primeiro (cache de camada). pnpm-workspace.yaml fixa ignoreScripts e registro.
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml .npmrc ./
+RUN pnpm install --frozen-lockfile
+COPY index.html tsconfig.json vite.config.ts ./
+COPY scripts ./scripts
+COPY src ./src
+# public/ inclui models/Seed-san.vrm (git-ignorado; uso local, NAO redistribuir esta imagem).
+COPY public ./public
+# tsc + vite build + build-notice ([AVISO] do VRM e mantido na saida do build)
+RUN pnpm run build
+
+# --- runtime ---
+FROM nginxinc/nginx-unprivileged:alpine@sha256:b5047b9b76845eac124358373c6852377c52e4b05834a47647e955dd91cb8f1e
+COPY nginx/web.conf /etc/nginx/conf.d/default.conf
+COPY --from=build /src/dist /usr/share/nginx/html
+EXPOSE 8080
+HEALTHCHECK --interval=15s --timeout=5s --start-period=5s --retries=3 \
+  CMD ["wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]

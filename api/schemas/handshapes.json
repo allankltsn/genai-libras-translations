@@ -1,0 +1,187 @@
+{
+ "version": "1",
+ "handshapes": {
+  "A": {
+   "thumb": -0.3,
+   "index": 1.5,
+   "middle": 1.5,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "B": {
+   "thumb": 0.9,
+   "index": 0.0,
+   "middle": 0.0,
+   "ring": 0.0,
+   "pinky": 0.0
+  },
+  "C": {
+   "thumb": 0.2,
+   "index": 0.6,
+   "middle": 0.6,
+   "ring": 0.6,
+   "pinky": 0.6
+  },
+  "D": {
+   "thumb": 0.7,
+   "index": 0.0,
+   "middle": 1.2,
+   "ring": 1.2,
+   "pinky": 1.2
+  },
+  "E": {
+   "thumb": 0.9,
+   "index": 1.1,
+   "middle": 1.1,
+   "ring": 1.1,
+   "pinky": 1.1
+  },
+  "F": {
+   "thumb": 0.7,
+   "index": 0.9,
+   "middle": 0.0,
+   "ring": 0.0,
+   "pinky": 0.0
+  },
+  "G": {
+   "thumb": -0.3,
+   "index": 0.0,
+   "middle": 1.5,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "H": {
+   "thumb": 0.9,
+   "index": 0.0,
+   "middle": 0.0,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "I": {
+   "thumb": 0.9,
+   "index": 1.5,
+   "middle": 1.5,
+   "ring": 1.5,
+   "pinky": 0.0
+  },
+  "J": {
+   "thumb": 0.9,
+   "index": 1.5,
+   "middle": 1.5,
+   "ring": 1.5,
+   "pinky": 0.0
+  },
+  "K": {
+   "thumb": 0.3,
+   "index": 0.0,
+   "middle": 0.0,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "L": {
+   "thumb": -0.6,
+   "index": 0.0,
+   "middle": 1.4,
+   "ring": 1.4,
+   "pinky": 1.4
+  },
+  "M": {
+   "thumb": 1.0,
+   "index": 1.2,
+   "middle": 1.2,
+   "ring": 1.2,
+   "pinky": 1.5
+  },
+  "N": {
+   "thumb": 1.0,
+   "index": 1.2,
+   "middle": 1.2,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "O": {
+   "thumb": 0.6,
+   "index": 0.9,
+   "middle": 0.9,
+   "ring": 0.9,
+   "pinky": 0.9
+  },
+  "P": {
+   "thumb": 0.3,
+   "index": 0.0,
+   "middle": 0.0,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "Q": {
+   "thumb": -0.3,
+   "index": 0.0,
+   "middle": 1.5,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "R": {
+   "thumb": 0.9,
+   "index": 0.0,
+   "middle": 0.35,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "S": {
+   "thumb": 0.9,
+   "index": 1.5,
+   "middle": 1.5,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "T": {
+   "thumb": 0.6,
+   "index": 1.5,
+   "middle": 1.5,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "U": {
+   "thumb": 0.9,
+   "index": 0.0,
+   "middle": 0.0,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "V": {
+   "thumb": 0.9,
+   "index": 0.0,
+   "middle": 0.0,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "W": {
+   "thumb": 0.9,
+   "index": 0.0,
+   "middle": 0.0,
+   "ring": 0.0,
+   "pinky": 1.5
+  },
+  "X": {
+   "thumb": 0.9,
+   "index": 0.9,
+   "middle": 1.5,
+   "ring": 1.5,
+   "pinky": 1.5
+  },
+  "Y": {
+   "thumb": -0.8,
+   "index": 1.4,
+   "middle": 1.4,
+   "ring": 1.4,
+   "pinky": 0.0
+  },
+  "Z": {
+   "thumb": 0.9,
+   "index": 0.0,
+   "middle": 1.5,
+   "ring": 1.5,
+   "pinky": 1.5
+  }
+ }
+}

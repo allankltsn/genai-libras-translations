@@ -1,0 +1,132 @@
+{
+  "version": "1",
+  "signs": [
+    {
+      "id": "REPOUSO",
+      "label": "Posição neutra",
+      "kind": "technical"
+    },
+    {
+      "id": "LETRA_L",
+      "label": "Letra \"L\"",
+      "kind": "letter"
+    },
+    {
+      "id": "LETRA_Y",
+      "label": "Letra \"Y\"",
+      "kind": "letter"
+    },
+    {
+      "id": "LETRA_A",
+      "label": "Letra \"A\"",
+      "kind": "letter"
+    },
+    {
+      "id": "DUVIDA",
+      "label": "Dúvida / pergunta",
+      "kind": "lexical",
+      "face": {
+        "brows": "up"
+      }
+    },
+    {
+      "id": "AFIRMACAO",
+      "label": "Afirmação (sim)",
+      "kind": "lexical",
+      "face": {
+        "emotion": "happy",
+        "emotionWeight": 0.3
+      }
+    },
+    {
+      "id": "NEGACAO",
+      "label": "Negação (não)",
+      "kind": "lexical",
+      "face": {
+        "brows": "furrowed"
+      }
+    },
+    {
+      "id": "ESPACO_NEUTRO",
+      "label": "Espaço neutro frontal",
+      "kind": "technical"
+    },
+    {
+      "id": "TROCA_PAPEL",
+      "label": "Troca de papel",
+      "kind": "technical"
+    },
+    {
+      "id": "OI",
+      "label": "Oi / olá",
+      "kind": "lexical",
+      "face": {
+        "emotion": "happy",
+        "emotionWeight": 0.5
+      }
+    },
+    {
+      "id": "TUDO_BEM",
+      "label": "Tudo bem?",
+      "kind": "lexical",
+      "face": {
+        "brows": "up",
+        "emotion": "happy",
+        "emotionWeight": 0.3
+      }
+    },
+    {
+      "id": "POR_FAVOR",
+      "label": "Por favor",
+      "kind": "lexical"
+    },
+    {
+      "id": "OBRIGADO",
+      "label": "Obrigado(a)",
+      "kind": "lexical",
+      "face": {
+        "emotion": "happy",
+        "emotionWeight": 0.4
+      }
+    },
+    {
+      "id": "DESCULPA",
+      "label": "Desculpa",
+      "kind": "lexical",
+      "face": {
+        "emotion": "sad",
+        "emotionWeight": 0.4
+      }
+    },
+    {
+      "id": "BANHEIRO",
+      "label": "Banheiro",
+      "kind": "lexical"
+    },
+    {
+      "id": "AGUA",
+      "label": "Água",
+      "kind": "lexical"
+    },
+    {
+      "id": "COMER",
+      "label": "Comer",
+      "kind": "lexical"
+    }
+  ],
+  "lexicon": {
+    "oi": "OI",
+    "ola": "OI",
+    "tudo bem": "TUDO_BEM",
+    "por favor": "POR_FAVOR",
+    "obrigado": "OBRIGADO",
+    "desculpa": "DESCULPA",
+    "banheiro": "BANHEIRO",
+    "agua": "AGUA",
+    "comer": "COMER",
+    "sim": "AFIRMACAO",
+    "nao": "NEGACAO",
+    "duvida": "DUVIDA",
+    "pergunta": "DUVIDA"
+  }
+}

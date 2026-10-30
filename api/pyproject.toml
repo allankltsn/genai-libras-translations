@@ -1,0 +1,11 @@
+[project]
+name = "libras-agent-api"
+version = "0.1.0"
+description = "API local (POC) do agente de glosa Libras"
+requires-python = ">=3.13,<3.14"
+# Dependencias exatas e com hashes: requirements.lock (gerado de requirements.in).
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-p no:cacheprovider"

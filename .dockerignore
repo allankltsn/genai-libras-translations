@@ -1,0 +1,23 @@
+# Contexto da imagem web (raiz). Nada disto entra no contexto de build.
+.git
+.gitignore
+node_modules
+dist
+api
+.env
+.env.*
+**/.env
+**/.env.*
+legacy
+modelo
+docs
+.claude
+.engineering
+.pytest_cache
+**/__pycache__
+*.log
+compose.yaml
+Dockerfile.web
+.dockerignore
+CLAUDE.md
+README.md

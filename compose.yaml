@@ -1,0 +1,137 @@
+# POC local: web (5180) + API (8000) + 9router (20128), tudo so em 127.0.0.1. Sem publicacao na web.
+# Segredos: NUNCA aqui. 9router via NINEROUTER_SECRETS_FILE (.env da raiz); API via api/.env.
+name: genai-libras
+
+x-hardening: &hardening
+  security_opt: ["no-new-privileges:true"]
+  cap_drop: ["ALL"]
+  restart: "no"
+  privileged: false
+
+services:
+  9router:
+    <<: *hardening
+    image: decolua/9router:0.5.112@sha256:fab111d99b23bde6c8944ca22982603ab0b09e917a0b1e4ce42a24b05753bec9
+    # Necessarias para o entrypoint trocar de usuario (sem elas o container nao inicia).
+    cap_add: ["SETUID", "SETGID", "CHOWN"]
+    env_file: ${NINEROUTER_SECRETS_FILE:?defina NINEROUTER_SECRETS_FILE no .env da raiz (veja .env.example)}
+    environment:
+      # Explicito: o container atual guardou dados num caminho corrompido pelo Git Bash (veja README).
+      DATA_DIR: /app/data
+    ports: ["127.0.0.1:20128:20128"]
+    volumes:
+      - ninerouter-data:/app/data
+    networks: [backend, egress]
+    mem_limit: 1g
+    cpus: 2
+    pids_limit: 512
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:20128/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+
+  api:
+    <<: *hardening
+    build: { context: ./api, dockerfile: Dockerfile }
+    image: genai-libras-api:local
+    env_file: ./api/.env
+    environment:
+      # Vence o env_file: dentro do compose o 9router e o servico `9router`, nao 127.0.0.1.
+      LLM_BASE_URL: http://9router:20128/v1
+      # Cache de sinais gerados (Redis so na rede backend). Valores/segredo vem do .env da raiz.
+      REDIS_URL: redis://redis:6379/0
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?defina REDIS_PASSWORD no .env da raiz (veja .env.example)}
+      CACHE_TTL_S: ${CACHE_TTL_S:-2592000}
+    ports: ["127.0.0.1:8000:8000"]
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=16m"]
+    networks: [backend, publish]
+    mem_limit: 512m
+    cpus: 1
+    pids_limit: 128
+    depends_on:
+      9router: { condition: service_healthy }
+      # Sem dependencia dura: a API falha aberta se o Redis cair (cache e opcional). So ordena a partida.
+      redis: { condition: service_started, required: false }
+    # healthcheck vem do Dockerfile (/readyz, nao chama o LLM)
+
+  web:
+    <<: *hardening
+    build: { context: ., dockerfile: Dockerfile.web }
+    image: genai-libras-web:local
+    ports: ["127.0.0.1:5180:8080"]
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=32m"]
+    networks: [backend, publish]
+    mem_limit: 128m
+    cpus: 0.5
+    pids_limit: 64
+    depends_on:
+      api: { condition: service_healthy }
+
+  redis:
+    <<: *hardening
+    image: redis:8.10-alpine@sha256:21090af93f8324db2f0f0f4f38a7c60369d47d917e000c3423d89d2ae2883537
+    # Sem `ports:` (nao publicado no host) e so na rede internal `backend` (sem saida para a internet).
+    # Roda como o usuario redis (o entrypoint so troca de usuario quando o 1o argumento e redis-server);
+    # sem capabilities. Senha: gravada em /tmp/redis.conf (tmpfs, modo 600, so o usuario redis le) e NAO
+    # aparece nos argumentos do processo nem em `docker inspect` Args/Cmd; aparece so em Config.Env
+    # (REDIS_PASSWORD), o que o compose torna inevitavel. Use senha sem espacos/aspas (ex.: hex).
+    user: redis
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?defina REDIS_PASSWORD no .env da raiz (veja .env.example)}
+    command:
+      - sh
+      - -c
+      - |
+        umask 077
+        {
+          printf 'requirepass %s\n' "$$REDIS_PASSWORD"
+          echo 'bind 0.0.0.0'
+          echo 'protected-mode yes'
+          echo 'dir /data'
+          echo 'appendonly yes'
+          echo 'appendfsync everysec'
+          echo 'save ""'
+          echo 'maxmemory 128mb'
+          echo 'maxmemory-policy allkeys-lru'
+          echo 'rename-command FLUSHALL ""'
+          echo 'rename-command FLUSHDB ""'
+          echo 'rename-command CONFIG ""'
+          echo 'rename-command DEBUG ""'
+          echo 'rename-command KEYS ""'
+        } > /tmp/redis.conf
+        exec redis-server /tmp/redis.conf
+    volumes:
+      - redis-data:/data
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=4m,mode=1777"]
+    networks: [backend]
+    mem_limit: 192m
+    cpus: 0.5
+    pids_limit: 64
+    healthcheck:
+      # REDISCLI_AUTH evita a senha na linha de comando (-a) e na lista de processos.
+      test: ["CMD-SHELL", "REDISCLI_AUTH=\"$$REDIS_PASSWORD\" redis-cli ping | grep -q PONG"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+networks:
+  # Sem rota para fora: comunicacao web -> api -> 9router.
+  backend: { internal: true }
+  # Necessaria so para PUBLICAR portas em 127.0.0.1 (redes internal nao publicam). api e web estao aqui.
+  publish: {}
+  # Saida para a internet: SOMENTE o 9router.
+  egress: {}
+
+volumes:
+  ninerouter-data:
+    external: true
+    name: 9router-poc-data
+  # Do compose (NAO external): `docker compose down -v` APAGA este volume (cache); nao afeta o do 9router.
+  redis-data:
+    name: libras-redis-data
